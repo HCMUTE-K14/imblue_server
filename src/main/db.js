@@ -15,39 +15,39 @@ let NOT_CONNECTED = 0;
 let CONNECTED = 1;
 
 function healthCheck() {
-	let health = Mongoose.connection.readyState;
+    let health = Mongoose.connection.readyState;
 
-	if(health === NOT_CONNECTED) {
-		Log.info("DB At Risk");
-	} else {
-		Log.info("DB is Fine");
-	}
+    if (health === NOT_CONNECTED) {
+        Log.info("DB At Risk");
+    } else {
+        Log.info("DB is Fine");
+    }
 
-	return health;
+    return health;
 }
 
 function connect() {
-	let url;
-	if(!Config.db_username || !Config.db_password) {
-		url= `mongodb://${Config.db_host}:${Config.db_port}/${Config.db_name}`;
-	} else {
-		url = `mongodb://${Config.db_username}:${Config.db_password}@${Config.db_host}:${Config.db_port}/${Config.db_name}`;
-	}
+    let url;
+    if (!Config.db_username || !Config.db_password) {
+        url = `mongodb://${Config.db_host}:${Config.db_port}/${Config.db_name}`;
+    } else {
+        url = `mongodb://${Config.db_username}:${Config.db_password}@${Config.db_host}:${Config.db_port}/${Config.db_name}`;
+    }
 
-	Mongoose.set('useCreateIndex', true)
-	Mongoose.connect(url, { useNewUrlParser: true });
+    Mongoose.set('useCreateIndex', true)
+    Mongoose.connect(url, { useNewUrlParser: true });
 
-	Mongoose.connection
-		.on('error', (error) => {
-			Log.debug(error.message + " with url: " + url);
-		})
-		.on('connected', () => {
-			Log.debug("Connected to DB " + url);
-		})
-		.on('reconnected', () => {
-			Log.debug('Reconnected to MongoDB');
-		})
-		.on('disconnected', () => {
-			Log.debug("Disconnected to DB " + url);
-		})
+    Mongoose.connection
+        .on('error', (error) => {
+            Log.debug(error.message + " with url: " + url);
+        })
+        .on('connected', () => {
+            Log.debug("Connected to DB " + url);
+        })
+        .on('reconnected', () => {
+            Log.debug('Reconnected to MongoDB');
+        })
+        .on('disconnected', () => {
+            Log.debug("Disconnected to DB " + url);
+        })
 }

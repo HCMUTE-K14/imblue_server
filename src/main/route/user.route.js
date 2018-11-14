@@ -7,6 +7,6 @@ UserRouter.route('/registration')
     .post(UserController.registration);
 
 UserRouter.route('/:userId')
-	.patch(UserController.update);
+    .patch(UserController.update);
 
 module.exports = UserRouter;

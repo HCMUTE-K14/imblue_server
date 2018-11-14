@@ -15,7 +15,7 @@ const UserSchema = new Mongoose.Schema({
         required: true
     },
     display_name: {
-    	type: String
+        type: String
     }
 });
 
