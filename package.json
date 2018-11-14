@@ -1,0 +1,19 @@
+{
+    "name": "ImbluE",
+    "version": "1.0.0",
+    "description": "A MERN Stack App just for ra truong",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "start-dev": "nodemon server.js"
+    },
+    "author": "InfamouSs",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.18.3",
+        "express": "^4.16.4",
+        "fs": "0.0.1-security",
+        "mongoose": "^5.3.12",
+        "path": "^0.12.7"
+    }
+}
