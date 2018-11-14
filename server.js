@@ -3,7 +3,6 @@ const DB = require('./src/main/db');
 const Log = require('./src/main/log')('Server');
 
 App.listen(App.get('port'), () => {
-    Log.info(`Application run at port ${App.get('port')}`);
+    Log.wtf(`Application run at port ${App.get('port')}`);
     DB.openConnect();
 });
-

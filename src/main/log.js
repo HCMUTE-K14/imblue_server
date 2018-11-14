@@ -1,25 +1,27 @@
 module.exports = (tag) => {
 	let LogModule = {};
 
+	function logTemplate(level, tag, message) {
+		return new Date().toLocaleString() + ` [${level}] ${tag}: ${message}`;
+	}
+
 	LogModule.info = function(message) {
-		console.info(`[${tag}]: ${message}`);
+		console.info(logTemplate('INFO', tag, message));
 	}
 
 	LogModule.warn = function(message) {
-		console.warn(`[${tag}]: ${message}`);
+		console.warn(logTemplate('WARNING', tag, message));
 	}
 
 	LogModule.error = function(message) {
-		console.error(`[${tag}]: ${message}`);
+		console.error(logTemplate('ERROR', tag, message));
 	}
 
 	LogModule.debug = function(message) {
-		console.debug(`[${tag}]: ${message}`);
+		console.debug(logTemplate('DEBUG', tag, message));
 	}
 
-	LogModule.wtf = function(message) {
-		console.info(`[${tag}]: ${message}`);
-	}
+	LogModule.wtf = LogModule.info;
 
 	return LogModule;
 }
