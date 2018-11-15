@@ -11,6 +11,6 @@ UserRouter.route('/:userId')
     .delete(UserController.deleteById);
 
 UserRouter.route('/')
-	.delete(UserController.delete);
+    .delete(UserController.delete);
 
 module.exports = UserRouter;
