@@ -1,15 +1,15 @@
 const Express = require('express');
-const DB = require('../db');
 
+const HealthRouter = require('./health.route');
 const UserRouter = require('./user.route');
+const AuthRouter = require('./auth.route');
+const TokenRouter = require('./token.route');
 
 const Root = Express.Router();
 
-Root.get('/health-check', (req, res) => {
-    let dbHealth = DB.healthCheck();
-    res.send({ database: dbHealth == 0 ? 'At risk' : 'OK' });
-});
-
+Root.use('/health-check', HealthRouter); 
 Root.use('/users', UserRouter);
+Root.use('/auth', AuthRouter);
+Root.use('/token', TokenRouter);
 
 module.exports = Root;

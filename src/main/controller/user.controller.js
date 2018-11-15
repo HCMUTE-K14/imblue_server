@@ -1,60 +1,75 @@
 const UserService = require('../service/user.service');
-const BCrypt = require('bcryptjs');
-const Buffer = require('buffer').Buffer;
+const HashUtils = require('../common/hash.utils');
 const Log = require('../log')('UserController');
 
 const UserController = {};
 
-UserController.registration = (req, res) => {
-    let hashedPasswordBase64;
-    if (req.body.password) {
-        hashedPasswordBase64 = hashPasswordBase64(req.body.password);
-    } else {
-        res.status(503).json({ success: false, message: 'Bad request' });
-    }
-    req.body.password = hashedPasswordBase64;
+UserController.create = (req, res) => {
+    //1. Hash password from payload
+    let password = req.body.password;
+    req.body.password = HashUtils.hashBcryptBase64(password);
 
-    UserService.save(req.body)
+    //2. Insert into database with hash password
+    UserService.create(req.body)
         .then(data => {
-            Log.debug('Account was created ' + data._id);
-            res.status(200).json({ success: true, id: data._id });
+            Log.debug('Account was created with id: ' + data._id);
+            res.status(200).json({ success: true, id: data });
         })
         .catch(err => {
-            Log.debug(err.message);
+            Log.error(err.message);
             if (err.code == 11000) {
-                return res.status(503).send({ success: true, message: 'User already exists' });
+                return res.status(201).json({ success: true, message: 'Account already exists' });
             }
             res.status(500).json({ success: false, error: err.message });
         });
 }
 
 UserController.update = (req, res) => {
-
+    //1. Check if payload had password ==> hash it
     if (req.body.password) {
-        let hashedPasswordBase64 = hashPasswordBase64(req.body.password);
+        let hashedPasswordBase64 = HashUtils.hashBcryptBase64(req.body.password);
         req.body.password = hashedPasswordBase64;
     }
-
-    UserService.patchUser(req.params.userId, req.body)
+    //2. Update data
+    UserService.update(req.params.userId, req.body)
         .then(result => {
-            res.status(200).send({ success: true, message: 'Updated' });
+            Log.debug('Account was deleted with id: ' + ids);
+            res.status(200).json({ success: true, message: 'Account was updated' });
         })
         .catch(err => {
+            Log.error(err.message);
             res.status(500).json({ success: false, error: err.message });
         })
 }
 
+UserController.delete = (req, res) => {
+    //1. Get ids from query param and parse it into javascript array object
+    // /rest/users?id=1,2,3 ==> ids = [1, 2, 3]
+    let ids = req.query.id.split(',');
 
-function hashPassword(password) {
-    let salt = BCrypt.genSaltSync(10);
-    return BCrypt.hashSync(password, salt);
+    //2. Remove it
+    UserService.removeByIds(ids)
+        .then(result => {
+            Log.debug('Bulk Account was deleted with id: ' + ids);
+            res.status(200).json({ success: true, message: 'Bulk Account deleted' })
+        })
+        .catch(err => {
+            Log.error(err.message);
+            res.status(500).json({ success: false, error: err.message });
+        })
 }
 
-function hashPasswordBase64(password) {
-    let hashedPassword = hashPassword(password);
-
-    return Buffer.from(hashedPassword).toString('base64');
+UserController.deleteById = (req, res) => {
+    let id = req.params.userId;
+    UserService.removeById(id)
+        .then(result => {
+            Log.debug('Account was deleted with id: ' + id);
+            res.status(200).json({ success: true, message: 'Account deleted' })
+        })
+        .catch(err => {
+            Log.error(err.message);
+            res.status(500).json({ success: false, error: err.message });
+        })
 }
-
 
 module.exports = UserController;

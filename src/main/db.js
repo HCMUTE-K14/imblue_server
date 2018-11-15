@@ -18,9 +18,9 @@ function healthCheck() {
     let health = Mongoose.connection.readyState;
 
     if (health === NOT_CONNECTED) {
-        Log.info("DB At Risk");
+        Log.info('DB At Risk');
     } else {
-        Log.info("DB is Fine");
+        Log.info('DB is Fine');
     }
 
     return health;
@@ -39,15 +39,15 @@ function connect() {
 
     Mongoose.connection
         .on('error', (error) => {
-            Log.debug(error.message + " with url: " + url);
+            Log.error(error.message + " with url: " + url);
         })
         .on('connected', () => {
-            Log.debug("Connected to DB " + url);
+            Log.info("Connected to DB " + url);
         })
         .on('reconnected', () => {
-            Log.debug('Reconnected to MongoDB');
+            Log.info('Reconnected to MongoDB');
         })
         .on('disconnected', () => {
-            Log.debug("Disconnected to DB " + url);
+            Log.info("Disconnected to DB " + url);
         })
 }
