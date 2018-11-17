@@ -1,0 +1,1 @@
+mongod --fork --syslog && nodemon server.js

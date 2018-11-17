@@ -4,5 +4,8 @@
 	"db_name": "demo_node_js",
 	"db_username": "",
 	"db_password": "",
+	"jwt_secret": "secret",
+	"jwt_access_token_exp": "5h",
+	"jwt_refresh_token_exp": "5h",
 	"port": 8080
 }

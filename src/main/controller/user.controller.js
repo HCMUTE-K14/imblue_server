@@ -10,9 +10,12 @@ UserController.create = (req, res) => {
     req.body.password = HashUtils.hashBcryptBase64(password);
 
     //2. Insert into database with hash password
+    /// set default role is NORMAL_USER
+    /// to set role Admin, just edit database =)) with role = 'ADMIN'
+    req.body.role = 'NORMAL_USER';
     UserService.create(req.body)
         .then(data => {
-            Log.debug('Account was created with id: ' + data._id);
+            Log.info('Account was created with id: ' + data._id);
             res.status(200).json({ success: true, id: data });
         })
         .catch(err => {
@@ -30,10 +33,11 @@ UserController.update = (req, res) => {
         let hashedPasswordBase64 = HashUtils.hashBcryptBase64(req.body.password);
         req.body.password = hashedPasswordBase64;
     }
+    delete req.body.role;
     //2. Update data
     UserService.update(req.params.userId, req.body)
         .then(result => {
-            Log.debug('Account was deleted with id: ' + ids);
+            Log.info('Account was updated with id: ' + ids);
             res.status(200).json({ success: true, message: 'Account was updated' });
         })
         .catch(err => {
@@ -50,7 +54,7 @@ UserController.delete = (req, res) => {
     //2. Remove it
     UserService.removeByIds(ids)
         .then(result => {
-            Log.debug('Bulk Account was deleted with id: ' + ids);
+            Log.info('Bulk Account was deleted with id: ' + ids);
             res.status(200).json({ success: true, message: 'Bulk Account deleted' })
         })
         .catch(err => {
@@ -63,8 +67,28 @@ UserController.deleteById = (req, res) => {
     let id = req.params.userId;
     UserService.removeById(id)
         .then(result => {
-            Log.debug('Account was deleted with id: ' + id);
+            Log.info('Account was deleted with id: ' + id);
             res.status(200).json({ success: true, message: 'Account deleted' })
+        })
+        .catch(err => {
+            Log.error(err.message);
+            res.status(500).json({ success: false, error: err.message });
+        })
+}
+
+UserController.list = (req, res) => {
+    let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
+    let page = 0;
+    if (req.query) {
+        if (req.query.page) {
+            req.query.page = parseInt(req.query.page);
+            page = Number.isInteger(req.query.page) ? req.query.page : 0;
+        }
+    }
+    UserService.list(limit, page)
+        .then((result) => {
+            Log.info('Get list user with limit=' + limit + ' page=' + page);
+            res.status(200).json({ success: true, result: result });
         })
         .catch(err => {
             Log.error(err.message);

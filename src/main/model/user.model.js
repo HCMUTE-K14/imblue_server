@@ -16,6 +16,9 @@ const UserSchema = new Mongoose.Schema({
     },
     display_name: {
         type: String
+    },
+    role: {
+        type: String
     }
 });
 

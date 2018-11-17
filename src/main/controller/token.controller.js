@@ -2,10 +2,10 @@ const TokenController = {};
 
 
 TokenController.getAllReFreshToken = (req, res) => {
-	
+	//TODO: Implement later
 };
 
-TokenController.banReFreshToken = (req, res) => {
-	
+TokenController.rejectReFreshToken = (req, res) => {
+	//TODO: Implement later
 }
 
