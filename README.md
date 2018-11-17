@@ -1,5 +1,5 @@
 ## Start App
-> Find running command in package.json#script </br>
+> Find running command in package.json#script (make sure service mongodb was started)</br>
 > Use
 ```
 npm start
@@ -54,7 +54,7 @@ node server.js
 ---
 > --->: used
 ```
-App (Express) ---> Route ---> Controller ---> Service ---> Model
+App (Express) ---> Route ---> Middleware --->Controller ---> Service ---> Model
 ```
 ## Rest API
 | Path		 | Method | Description |
@@ -62,3 +62,7 @@ App (Express) ---> Route ---> Controller ---> Service ---> Model
 | /rest   	 | N/A    | Base URL	|
 | /rest/users/registration 	 |POST | Create Account |
 | /rest/users/:userId    	 |PATCH| Update Account |
+| /rest/user/:userId|DELETE| Delete Account|
+| /rest/users?limit=&page=| GET| Get all Account (Admin permission required)|
+| /rest/users?id=x,y,z | DELETE | Bulk Deelte (admin permission required)|
+| /rest/auth/login| POST | Login
