@@ -8,7 +8,7 @@ UserController.create = (req, res) => {
     //1. Hash password from payload
     let password = req.body.password;
     req.body.password = HashUtils.hashBcryptBase64(password);
-
+    console.log("password"+HashUtils.hashBcryptBase64(password));
     //2. Insert into database with hash password
     UserService.create(req.body)
         .then(data => {
