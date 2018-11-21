@@ -13,5 +13,5 @@ function getPagingInfoFromRequest(req) {
             page = Number.isInteger(req.query.page) ? req.query.page : 0;
         }
     }
-    return { limit: limit, page: page };
+    return { limit: parseInt(limit), page: parseInt(page) };
 }

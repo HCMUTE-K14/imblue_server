@@ -5,7 +5,7 @@ const OrderService = new BaseService(Order);
 
 OrderService.findOrderWithMenuById = (menuId) => {
     return new Promise((resolve, reject) => {
-        Order.findById(menuId, { _id: 0 })
+        Order.find()
             .populate('user_created', { _id: 1, username: 0, display_name: 1, role: 0 })
             .populate('list_menu_item', { _id: 0 })
             .populate('list_menu_item.beverage', { name: 1, price: 1, _id: 0 })

@@ -24,11 +24,3 @@
     // 	}]
     // });
     // order.save().then();
-    // Order.findById('5bf435411f500c0cf2ac47bd', {_id: 0})
-    //     //.populate('user_created', { _id: 1, username: 1, display_name: 1, role: 1 })
-    //     .populate('list_menu_item', { _id: 0 })
-    //     .populate('list_menu_item.beverage', { name: 1, price: 1, _id: 0 })
-    //     .exec(function(error, posts) {
-    //         posts.total = calculateTotalPrice(posts.list_menu_item);
-    //         console.log(posts.total)
-    //     });
