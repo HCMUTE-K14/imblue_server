@@ -13,8 +13,11 @@ OrderService.findOrderWithMenuById = (menuId) => {
                 if (error) {
                     reject(error);
                 } else {
-                    order.total = calculateTotalPrice(order.list_menu_item);
-                    resolve(order);
+                    let total = calculateTotalPrice(order.list_menu_item);
+                    let realData = order.toJSON();
+                    realData['totalPrice'] = total;
+                    
+                    resolve(realData);
                 }
             });
     });
@@ -23,19 +26,23 @@ OrderService.findOrderWithMenuById = (menuId) => {
 OrderService.findOrderWithMenu = (limit, page) => {
     return new Promise((resolve, reject) => {
         Order.find()
-            .populate('user_created', { _id: 1, username: 0, display_name: 1, role: 0 })
+            .populate('user_created', { role: 0 })
             .populate('list_menu_item', { _id: 0 })
             .populate('list_menu_item.beverage', { name: 1, price: 1, _id: 0 })
-            .limit(limit)
+            .limit(parseInt(limit))
             .skip(limit * page)
             .exec(function(err, orders) {
                 if (err) {
                     reject(err);
                 } else {
-                	for(let order in orders) {
-                		order.total = calculateTotalPrice(order.list_menu_item);
-                	}
-                    resolve(orders);
+                    let result = [];
+                    for (let order of orders) {
+                        total = calculateTotalPrice(order.list_menu_item);
+                        let realData = order.toJSON();
+                        realData['totalPrice'] = total;
+                        result.push(realData);
+                    }
+                    resolve(result);
                 }
             })
     });
@@ -43,11 +50,14 @@ OrderService.findOrderWithMenu = (limit, page) => {
 
 function calculateTotalPrice(listMenu) {
     let total = 0;
-    for (let i = 0, size = listMenu.length; i < size; i++) {
-        let item = listMenu[i];
-        let price = item.beverage.price;
-        if (price) {
-            total += item.quantity * price;
+
+    if (listMenu) {
+        for (let i = 0, size = listMenu.length; i < size; i++) {
+            let item = listMenu[i];
+            if (item && item.beverage && item.beverage.price) {
+                let price = item.beverage.price;
+                total += item.quantity * price;
+            }
         }
     }
 
