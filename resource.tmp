@@ -1,0 +1,26 @@
+
+    // 5bf050825ad00c0c766e610f
+    // let menu = new Beverage({
+    // 	name: 'Mon#1',
+    // 	price: 123
+    // });
+    // let menu2 = new Beverage({
+    // 	name: 'Mon#2',
+    // 	price: 456
+    // });
+    // menu.save().then();
+    // menu2.save().then();
+    //'5bf0586ee4b8120eee406e93', '5bf0586ee4b8120eee406e94'
+    //5bf433ee5b2fad0c826d86b4, 5bf433ee5b2fad0c826d86b5
+    // let order = new Order({
+    // 	user_created: new Mongoose.Types.ObjectId('5bf0586ee4b8120eee406e93'),
+    // 	status: 'PROCESSING',
+    // 	list_menu_item: [{
+    // 		quantity: 1,
+    // 		beverage: new Mongoose.Types.ObjectId('5bf433ee5b2fad0c826d86b4')
+    // 	}, {
+    // 		quantity: 2,
+    // 		beverage: new Mongoose.Types.ObjectId('5bf433ee5b2fad0c826d86b5')
+    // 	}]
+    // });
+    // order.save().then();

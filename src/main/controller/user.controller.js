@@ -1,5 +1,6 @@
 const UserService = require('../service/user.service');
 const HashUtils = require('../common/hash.utils');
+const HttpUtils = require('../common/http.utils');
 const Log = require('../log')('UserController');
 
 const UserController = {};
@@ -77,15 +78,9 @@ UserController.deleteById = (req, res) => {
 }
 
 UserController.list = (req, res) => {
-    let limit = req.query.limit && req.query.limit <= 100 ? parseInt(req.query.limit) : 10;
-    let page = 0;
-    if (req.query) {
-        if (req.query.page) {
-            req.query.page = parseInt(req.query.page);
-            page = Number.isInteger(req.query.page) ? req.query.page : 0;
-        }
-    }
-    UserService.list(limit, page)
+    let pagingInfo = HttpUtils.getPagingInfoFromRequest(req);
+    
+    UserService.list(pagingInfo.limit, pagingInfo.page)
         .then((result) => {
             Log.info('Get list user with limit=' + limit + ' page=' + page);
             res.status(200).json({ success: true, result: result });

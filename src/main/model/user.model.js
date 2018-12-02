@@ -13,8 +13,20 @@ const UserSchema = new Mongoose.Schema({
     password: {
         type: String,
         required: true
-    },
+    }, 
     display_name: {
+        type: String
+    },
+    date_of_birth: {
+        type: Date
+    },
+    identity_id: {
+        type: String
+    },
+    phone_number: {
+        type: String
+    },
+    address: {
         type: String
     },
     role: {
@@ -35,6 +47,6 @@ UserSchema.set('toJSON', {
     }
 });
 
-const User = Mongoose.model(COLLECTION_NAME, UserSchema, COLLECTION_NAME);
+const User = Mongoose.model('user', UserSchema, COLLECTION_NAME);
 
 module.exports = User;
