@@ -76,6 +76,10 @@ function BaseService(Model) {
     }
 
     this.deleteById = this.removeById;
+
+    this.setSocketServer = (socket) => {
+        this.socket = socket;
+    }
 }
 
 module.exports = BaseService;
