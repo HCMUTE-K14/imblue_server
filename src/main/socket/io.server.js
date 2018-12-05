@@ -12,8 +12,7 @@ const DISCONNECT = 'disconnect';
 
 SocketServer.start = () => {
     Log.info('Start Socket Server on ' + Config.socket_port);
-
-    RegisterIO.register(OrderServiceIO);
+	RegisterIO.register(OrderServiceIO);
 
     SocketServer.on(CONNECTION, (socket) => {
     	RegisterIO.apply(socket);

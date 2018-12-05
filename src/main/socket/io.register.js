@@ -9,7 +9,8 @@ RegisterIO.register = (service) => {
 }
 
 RegisterIO.apply = (socket) => {
-	Log.info('Number of service:' + ServiceRegisted.length);
+	Log.info(`${socket.id} apply ${ServiceRegisted.length} service`);
+	
 	for(let service of ServiceRegisted) {
 		service.run(socket);
 	}

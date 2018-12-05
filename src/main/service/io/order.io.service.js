@@ -20,10 +20,11 @@ const OrderServiceIO = {};
 OrderServiceIO.name = 'OrderServiceIO';
 
 OrderServiceIO.run = (socket) => {
-	Log.info('Started');
+    let ip = socket.request.connection.remoteAddress;
+	Log.info('Started#'+ip);
 
     socket.on(CRUD_ORDER_EVENT, (data) => {
-        Log.info(`on ${CRUD_ORDER_EVENT} with ${JSON.stringify(data)}`);
+        Log.debug(`on ${CRUD_ORDER_EVENT} with ${JSON.stringify(data)}`);
         socket.broadcast.emit(NOTIFY_CHANGE_ORDER_EVENT, {
             method: NEED_RELOAD_ORDER_METHOD,
             payload: data.orderId
@@ -31,7 +32,7 @@ OrderServiceIO.run = (socket) => {
     });
 
     socket.on(NOTIFY_CHANGE_ORDER_EVENT, (data) => {
-        Log.info(`on ${NOTIFY_CHANGE_ORDER_EVENT} with ${data}`);
+        Log.debug(`on ${NOTIFY_CHANGE_ORDER_EVENT} with ${data}`);
     });
 }
 
