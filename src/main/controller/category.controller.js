@@ -1,10 +1,10 @@
-const OrderService = require('../service/order.service');
+const CategoryService = require('../service/category.service');
 const HttpUtils = require('../common/http.utils');
-const SimpleController = require('./simple.controller')(OrderService);
+const SimpleController = require('./simple.controller')(CategoryService);
 
-const OrderController = {};
+const CategoryController = {};
 
-OrderController.create = (req, res) => {
+CategoryController.create = (req, res) => {
     let order = req.body;
 
     SimpleController.create(order, (data) => {
@@ -15,8 +15,8 @@ OrderController.create = (req, res) => {
         });
 }
 
-OrderController.update = (req, res) => {
-    let payload = { id: req.params.orderId, body: req.body };
+CategoryController.update = (req, res) => {
+    let payload = { id: req.params.categoryId, body: req.body };
 
     SimpleController.update(payload, (data) => {
             res.status(200).json({ success: true, result: data });
@@ -26,7 +26,7 @@ OrderController.update = (req, res) => {
         });
 }
 
-OrderController.delete = (req, res) => {
+CategoryController.delete = (req, res) => {
     let payload = { id: req.params.orderId };
 
     SimpleController.delete(payload, (data) => {
@@ -37,7 +37,7 @@ OrderController.delete = (req, res) => {
         });
 }
 
-OrderController.bulkDelete = (req, res) => {
+CategoryController.bulkDelete = (req, res) => {
     let ids = req.query.id.split(',');
 
     SimpleController.bulkDelete(ids, (data) => {
@@ -48,21 +48,20 @@ OrderController.bulkDelete = (req, res) => {
         });
 }
 
-OrderController.list = (req, res) => {
+CategoryController.list = (req, res) => {
     let pagingInfo = HttpUtils.getPagingInfoFromRequest(req);
 
-    OrderService.findOrderWithMenu(pagingInfo.limit, pagingInfo.page)
-        .then(data => {
-            res.status(200).json({ success: true, result: data });
-        })
-        .catch(err => {
-            res.status(500).json({ success: false, err: err.message })
-        })
+    SimpleController.list(pagingInfo, (data) => {
+      res.status(200).json({ success: true, result: data });
+    }, (err) => {
+      res.status(500).json({ success: false, err: err.message })
+    })
 }
 
-OrderController.findById = (req, res) => {
-    let id = req.params.orderId;
-    OrderService.findOrderWithMenuById(id)
+CategoryController.findById = (req, res) => {
+    let id = req.params.categoryId;
+
+    SimpleController.findById(id)
         .then(data => {
             if (data) {
                 res.status(200).json({ success: true, result: data });
@@ -75,4 +74,4 @@ OrderController.findById = (req, res) => {
         });
 }
 
-module.exports = OrderController;
+module.exports = CategoryController;

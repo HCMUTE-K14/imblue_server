@@ -7,14 +7,15 @@ const TokenRouter = require('./token.route');
 
 const BeverageRouter = require('./beverage.route');
 const OrderRouter = require('./order.route');
+const CategoryRouter = require('./category.route');
 
 const Root = Express.Router();
 
-Root.use('/health-check', HealthRouter); 
+Root.use('/health-check', HealthRouter);
 Root.use('/users', UserRouter);
 Root.use('/auth', AuthRouter);
 Root.use('/token', TokenRouter);
 Root.use('/beverages', BeverageRouter);
 Root.use('/orders', OrderRouter);
-
+Root.use('/categories', CategoryRouter);
 module.exports = Root;

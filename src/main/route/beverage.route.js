@@ -21,6 +21,9 @@ BeverageRouter.route('/:beverageId')
 	.get(VerifyTokenMiddleware.validJWT, BeverageController.findById)
     .patch(VerifyTokenMiddleware.validJWT, PermissionMiddleware.onlyAdminCanDoThisAction, BeverageController.update)
     .delete(VerifyTokenMiddleware.validJWT, PermissionMiddleware.onlyAdminCanDoThisAction, BeverageController.delete);
+    
+BeverageRouter.route('/category/:categoryId')
+  .get(VerifyTokenMiddleware.validJWT, BeverageController.findBeverageByCategoryId)
 
 
 module.exports = BeverageRouter;
