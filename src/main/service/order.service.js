@@ -49,25 +49,19 @@ OrderService.findOrderWithMenu = (limit, page) => {
 }
 
 OrderService.changeStatus = (id, status) => {
-  console.log(id);
-  return new Promise((resolve, reject) => {
-      Order.findById(id)
-          .exec(function(err, order) {
-              if (err) {
-                  reject(err);
-              } else {
-                  let orderNeedUpdate = order.toJSON();
-                  orderNeedUpdate.status = status;
-
-                  Order.update(orderNeedUpdate)
-                    .then(data => {
-                        resolve(orderNeedUpdate);
-                    })
-                    .catch(err => {
-                        reject(err);
-                    })
-              }
-          })
+    return new Promise((resolve, reject) => {
+        Order.updateOne({ _id: id },
+            {
+                $set: {
+                    status: status
+                }
+            }, function(err, order) {
+                if (err) {
+                    reject(err);
+                } else {
+                   resolve(order);
+                }
+            });
   });
 }
 
