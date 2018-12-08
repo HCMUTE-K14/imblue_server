@@ -6,7 +6,7 @@ const COLLECTION_NAME = 'ORDER';
 
 const OrderSchema = new Mongoose.Schema({
     table_no: {
-        type: Number
+        type: String
     },
     date_created: {
         type: Date
