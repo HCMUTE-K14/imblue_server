@@ -4,6 +4,7 @@ const VerifyTokenMiddleware = require('../middleware/verify-token.middleware');
 const PermissionMiddleware = require('../middleware/auth-permission.middleware');
 
 const OrderRouter = Express.Router();
+
 // Data for creating
 // {
 // 	"table_no": 123,
@@ -16,7 +17,7 @@ const OrderRouter = Express.Router();
 // 		{
 // 			"quantity": 2,
 // 			"beverage": "5c0549e0fbb4ff0569feb652" // available on beverage table
-// 		}	
+// 		}
 // 	],
 // 	"status": "PROCESSING"
 // }
@@ -33,7 +34,7 @@ const OrderRouter = Express.Router();
 // 		{
 // 			"quantity": 2,
 // 			"beverage": "5c0549e0fbb4ff0569feb652"
-// 		}	
+// 		}
 // 	],
 // 	"status": "DONE"
 // }
@@ -43,8 +44,11 @@ OrderRouter.route('/')
     .delete(VerifyTokenMiddleware.validJWT, PermissionMiddleware.onlyAdminCanDoThisAction, OrderController.bulkDelete);
 
 OrderRouter.route('/:orderId')
-	.get(VerifyTokenMiddleware.validJWT, OrderController.findById)
+	  .get(VerifyTokenMiddleware.validJWT, OrderController.findById)
     .patch(VerifyTokenMiddleware.validJWT, OrderController.update)
     .delete(VerifyTokenMiddleware.validJWT, PermissionMiddleware.onlyAdminCanDoThisAction, OrderController.delete);
+
+OrderRouter.route('/changeStatus')
+  .post(VerifyTokenMiddleware.validJWT, OrderController.changeStatus);
 
 module.exports = OrderRouter;

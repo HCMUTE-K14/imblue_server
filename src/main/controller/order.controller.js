@@ -75,4 +75,19 @@ OrderController.findById = (req, res) => {
         });
 }
 
+OrderController.changeStatus = (req, res) => {
+    let body = req.body;
+    OrderService.changeStatus(body.orderId, body.status)
+        .then(data => {
+            if (data) {
+                res.status(200).json({ success: true, result: data });
+            } else {
+                res.status(200).json({ success: false });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ success: false, err: err.message })
+        });
+}
+
 module.exports = OrderController;

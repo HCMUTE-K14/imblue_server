@@ -16,7 +16,7 @@ OrderService.findOrderWithMenuById = (menuId) => {
                     let total = calculateTotalPrice(order.list_menu_item);
                     let realData = order.toJSON();
                     realData['totalPrice'] = total;
-                    
+
                     resolve(realData);
                 }
             });
@@ -25,10 +25,10 @@ OrderService.findOrderWithMenuById = (menuId) => {
 
 OrderService.findOrderWithMenu = (limit, page) => {
     return new Promise((resolve, reject) => {
-        Order.find()
+        Order.find({status: "PROCESSING"})
             .populate('user_created', { role: 0 })
             .populate('list_menu_item', { _id: 0 })
-            .populate('list_menu_item.beverage', { name: 1, price: 1, _id: 0 })
+            .populate('list_menu_item.beverage', { name: 1, price: 1, _id: 1 })
             .limit(parseInt(limit))
             .skip(limit * page)
             .exec(function(err, orders) {
@@ -46,6 +46,29 @@ OrderService.findOrderWithMenu = (limit, page) => {
                 }
             })
     });
+}
+
+OrderService.changeStatus = (id, status) => {
+  console.log(id);
+  return new Promise((resolve, reject) => {
+      Order.findById(id)
+          .exec(function(err, order) {
+              if (err) {
+                  reject(err);
+              } else {
+                  let orderNeedUpdate = order.toJSON();
+                  orderNeedUpdate.status = status;
+
+                  Order.update(orderNeedUpdate)
+                    .then(data => {
+                        resolve(orderNeedUpdate);
+                    })
+                    .catch(err => {
+                        reject(err);
+                    })
+              }
+          })
+  });
 }
 
 function calculateTotalPrice(listMenu) {
