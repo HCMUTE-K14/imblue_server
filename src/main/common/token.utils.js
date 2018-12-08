@@ -37,6 +37,6 @@ function generateAccessToken(loginInfo) {
 }
 
 function generateAccessTokenWithExp(loginInfo, exp) {
-	return JWT.sign(loginInfo, Config.jwt_secret, { expiresIn: exp,  algorithm:  "HS512" });
+	return JWT.sign(loginInfo, Config.jwt_secret, { algorithm:  "HS512" });
 }
 

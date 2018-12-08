@@ -18,7 +18,8 @@ const BeverageSchema = new Mongoose.Schema({
         type: String
     },
     category: {
-        type: [String]
+      type: Mongoose.Types.ObjectId,
+      ref: 'category'
     }
 });
 

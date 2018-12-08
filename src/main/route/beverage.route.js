@@ -5,13 +5,13 @@ const PermissionMiddleware = require('../middleware/auth-permission.middleware')
 
 const BeverageRouter = Express.Router();
 
- //  {
- //            "category": ["#tag2", "#tag3"],
- //            "name": "Cocacola",
- //            "price": 6,
- //            "unit": "K_VND",
- //            "desciption": "Co ca co laaa"
- // }
+// {
+// 	"name": "Coffee",
+// 	"description": "Coffee Trung Nguyen",
+// 	"price": 30,
+// 	"unit": "VND",
+// 	"category": ["#abc", "xyz"]
+// }
 BeverageRouter.route('/')
     .get(VerifyTokenMiddleware.validJWT, BeverageController.list)
     .post(VerifyTokenMiddleware.validJWT, PermissionMiddleware.onlyAdminCanDoThisAction, BeverageController.create)
@@ -21,6 +21,9 @@ BeverageRouter.route('/:beverageId')
 	.get(VerifyTokenMiddleware.validJWT, BeverageController.findById)
     .patch(VerifyTokenMiddleware.validJWT, PermissionMiddleware.onlyAdminCanDoThisAction, BeverageController.update)
     .delete(VerifyTokenMiddleware.validJWT, PermissionMiddleware.onlyAdminCanDoThisAction, BeverageController.delete);
+    
+BeverageRouter.route('/category/:categoryId')
+  .get(VerifyTokenMiddleware.validJWT, BeverageController.findBeverageByCategoryId)
 
 
 module.exports = BeverageRouter;

@@ -1,3 +1,9 @@
+const Config = require('./config');
+
+function isDubug() {
+    return Config.enviroment === 'debug';
+}
+
 module.exports = (tag) => {
     let LogModule = {};
 
@@ -18,7 +24,9 @@ module.exports = (tag) => {
     }
 
     LogModule.debug = function(message) {
-        console.debug(logTemplate('DEBUG', tag, message));
+        if(isDubug()) {
+            console.debug(logTemplate('DEBUG', tag, message));
+        }
     }
 
     LogModule.wtf = LogModule.info;

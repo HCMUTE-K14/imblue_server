@@ -1,13 +1,15 @@
+const Http = require('http');
+
 const App = require('./src/main/app');
 const DB = require('./src/main/db');
+const IO = require('./src/main/socket/io.server');
 const Log = require('./src/main/log')('Server');
-const Mongoose = require('mongoose');
 
-const Beverage = require('./src/main/model/beverage.model');
-const Order = require('./src/main/model/order.model');
+const Server = Http.createServer(App);
 
-App.listen(App.get('port'), () => {
+Server.listen(App.get('port'), () => {
     Log.wtf(`Application run at port ${App.get('port')}`);
     DB.openConnect();
+    IO.start();
 });
 

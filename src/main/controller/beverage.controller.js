@@ -50,12 +50,13 @@ BeverageController.bulkDelete = (req, res) => {
 
 BeverageController.list = (req, res) => {
     let pagingInfo = HttpUtils.getPagingInfoFromRequest(req);
-    SimpleController.list(pagingInfo, (data) => {
-            res.status(200).json({ success: true, result: data });
-        },
-        (err) => {
-            res.status(500).json({ success: false, err: err.message })
-        });
+    BeverageService.list(pagingInfo.limit, pagingInfo.page)
+      .then(result => {
+          res.status(200).json({ success: true, result: result });
+      })
+      .catch(err => {
+          res.status(500).json({ success: false, err: err.message });
+      })
 }
 
 BeverageController.findById = (req, res) => {
@@ -70,6 +71,24 @@ BeverageController.findById = (req, res) => {
         (err) => {
             res.status(500).json({ success: false, err: err.message })
         });
+}
+
+BeverageController.findBeverageByCategoryId = (req, res) => {
+  let id = req.params.categoryId;
+  let pagingInfo = HttpUtils.getPagingInfoFromRequest(req);
+
+
+  BeverageService.findBeverageByCategoryId(id, pagingInfo.limit, pagingInfo.page)
+    .then(data => {
+        if (data) {
+            res.status(200).json({ success: true, result: data });
+        } else {
+            res.status(200).json({ success: false });
+        }
+    })
+    .catch(err => {
+      res.status(500).json({ success: false, err: err.message })
+    })
 }
 
 module.exports = BeverageController;

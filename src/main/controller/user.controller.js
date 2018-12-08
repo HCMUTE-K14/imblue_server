@@ -79,10 +79,9 @@ UserController.deleteById = (req, res) => {
 
 UserController.list = (req, res) => {
     let pagingInfo = HttpUtils.getPagingInfoFromRequest(req);
-    
+
     UserService.list(pagingInfo.limit, pagingInfo.page)
         .then((result) => {
-            Log.info('Get list user with limit=' + limit + ' page=' + page);
             res.status(200).json({ success: true, result: result });
         })
         .catch(err => {

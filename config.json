@@ -7,5 +7,7 @@
 	"jwt_secret": "secret",
 	"jwt_access_token_exp": "5h",
 	"jwt_refresh_token_exp": "5h",
-	"port": 8080
+	"port": 8080,
+	"socket_port": 4200,
+	"enviroment": "production"
 }
