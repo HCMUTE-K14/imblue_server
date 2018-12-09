@@ -9,7 +9,7 @@ OrderService.findOrderWithMenuById = (menuId) => {
             .populate('user_created', { _id: 1, username: 0, display_name: 1, role: 0 })
             .populate('list_menu_item', { _id: 0 })
             .populate('list_menu_item.beverage', { name: 1, price: 1, _id: 0 })
-            .exec(function(error, order) {
+            .exec(function (error, order) {
                 if (error) {
                     reject(error);
                 } else {
@@ -25,13 +25,18 @@ OrderService.findOrderWithMenuById = (menuId) => {
 
 OrderService.findOrderWithMenu = (limit, page) => {
     return new Promise((resolve, reject) => {
-        Order.find({status: "PROCESSING"})
+        Order.find({
+            $or: [
+                { status: 'PROCESSING' },
+                { status: 'DONE' }
+            ]
+        })
             .populate('user_created', { role: 0 })
             .populate('list_menu_item', { _id: 0 })
             .populate('list_menu_item.beverage', { name: 1, price: 1, _id: 1 })
             .limit(parseInt(limit))
             .skip(limit * page)
-            .exec(function(err, orders) {
+            .exec(function (err, orders) {
                 if (err) {
                     reject(err);
                 } else {
@@ -55,14 +60,34 @@ OrderService.changeStatus = (id, status) => {
                 $set: {
                     status: status
                 }
-            }, function(err, order) {
+            }, function (err, order) {
                 if (err) {
                     reject(err);
                 } else {
-                   resolve(order);
+                    resolve(order);
                 }
             });
-  });
+    });
+}
+
+OrderService.update = (id, order) => {
+    console.log(order);
+    return new Promise((resolve, reject) => {
+        Order.updateOne({ _id: id },
+            {
+                $set: {
+                    list_menu_item: order.list_menu_item
+                }
+            }, function (err, order) {
+                
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                } else {
+                    resolve(order);
+                }
+            });
+    });
 }
 
 function calculateTotalPrice(listMenu) {

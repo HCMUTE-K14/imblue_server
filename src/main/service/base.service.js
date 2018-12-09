@@ -31,7 +31,9 @@ function BaseService(Model) {
                 if (err) {
                     reject(err);
                 };
+                console.log(data);
                 for (let i in data) {
+                    console.log(data[i]);
                     _model[i] = data[i];
                 }
                 _model.save(function(err, updatedData) {

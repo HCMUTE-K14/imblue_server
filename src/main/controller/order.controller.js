@@ -18,12 +18,13 @@ OrderController.create = (req, res) => {
 OrderController.update = (req, res) => {
     let payload = { id: req.params.orderId, body: req.body };
 
-    SimpleController.update(payload, (data) => {
-            res.status(200).json({ success: true, result: data });
-        },
-        (err) => {
-            res.status(500).json({ success: false, err: err.message })
-        });
+    OrderService.update(payload.id, payload.body)
+    .then(result => {
+        res.status(200).json({ success: true, result: result });
+    })
+    .catch(err => {
+        res.status(500).json({ success: false, err: err.message })
+    })
 }
 
 OrderController.delete = (req, res) => {
